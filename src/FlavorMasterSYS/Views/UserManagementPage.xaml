@@ -17,58 +17,152 @@
 
         <!-- Header -->
         <Grid Grid.Row="0" Margin="0,0,0,24">
-            <TextBlock Text="👥 Gestión de Usuarios / User Management" 
-                       Style="{ThemeResource TitleTextBlockStyle}"
-                       VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="Gestión de Usuarios" 
+                           Style="{ThemeResource TitleLargeTextBlockStyle}"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Administra los usuarios y permisos del sistema" 
+                           Style="{ThemeResource BodyTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
             <Button x:Name="AddUserButton" 
-                    Content="➕ Nuevo Usuario / New User" 
                     HorizontalAlignment="Right"
                     Style="{ThemeResource AccentButtonStyle}"
-                    Click="AddUserButton_Click"/>
+                    CornerRadius="8"
+                    Height="40"
+                    Click="AddUserButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE8FA;" FontSize="14"/>
+                    <TextBlock Text="Nuevo Usuario"/>
+                </StackPanel>
+            </Button>
         </Grid>
 
-        <!-- Users List -->
+        <!-- Users List - Modern Card Design -->
         <Border Grid.Row="1" 
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                CornerRadius="8" 
-                Padding="16">
-            <ListView x:Name="UsersListView" SelectionMode="None">
+                CornerRadius="16"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1">
+            <ListView x:Name="UsersListView" 
+                      SelectionMode="None"
+                      Padding="8">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,4"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="8" Margin="0,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                CornerRadius="12"
+                                Padding="20"
+                                Margin="0,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding FullName}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                                <TextBlock Text="{Binding Username}" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                            </StackPanel>
+                                <!-- Avatar -->
+                                <Border Grid.Column="0" 
+                                        Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                        CornerRadius="24"
+                                        Width="48" Height="48"
+                                        Margin="0,0,16,0">
+                                    <FontIcon Glyph="&#xE77B;" 
+                                              FontSize="24" 
+                                              Foreground="White"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                </Border>
 
-                            <TextBlock Grid.Column="1" Text="{Binding Role}" VerticalAlignment="Center"/>
-                            
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
-                                <Run Text="Activo: "/>
-                                <Run Text="{Binding IsActive}"/>
-                            </TextBlock>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding FullName}" 
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE77B;" 
+                                                  FontSize="12"
+                                                  Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text="{Binding Username}" 
+                                                   Style="{ThemeResource CaptionTextBlockStyle}"
+                                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
 
-                            <TextBlock Grid.Column="3" VerticalAlignment="Center">
-                                <Run Text="Dashboard: "/>
-                                <Run Text="{Binding CanViewDashboard}"/>
-                            </TextBlock>
+                                <Border Grid.Column="2" 
+                                        Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                        CornerRadius="6"
+                                        Padding="12,6"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Role}" 
+                                               Foreground="White"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"/>
+                                </Border>
+                                
+                                <StackPanel Grid.Column="3" 
+                                            Orientation="Horizontal" 
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <Ellipse Width="8" Height="8">
+                                        <Ellipse.Fill>
+                                            <SolidColorBrush Color="{ThemeResource SystemFillColorSuccessBackground}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock VerticalAlignment="Center"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                        <Run Text="Activo: "/>
+                                        <Run Text="{Binding IsActive}"/>
+                                    </TextBlock>
+                                </StackPanel>
 
-                            <TextBlock Grid.Column="4" Text="{Binding LastLogin}" VerticalAlignment="Center" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <StackPanel Grid.Column="4" 
+                                            Orientation="Horizontal" 
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <FontIcon Glyph="&#xE9F9;" 
+                                              FontSize="14"
+                                              Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock VerticalAlignment="Center"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                        <Run Text="{Binding CanViewDashboard}"/>
+                                    </TextBlock>
+                                </StackPanel>
 
-                            <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8">
-                                <Button Content="✏️" Click="EditUserButton_Click" Tag="{Binding}" ToolTipService.ToolTip="Editar / Edit"/>
-                                <Button Content="🗑️" Click="DeleteUserButton_Click" Tag="{Binding}" ToolTipService.ToolTip="Eliminar / Delete"/>
-                            </StackPanel>
-                        </Grid>
+                                <TextBlock Grid.Column="5" 
+                                           Text="{Binding LastLogin}" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                           Style="{ThemeResource CaptionTextBlockStyle}"/>
+
+                                <StackPanel Grid.Column="6" 
+                                            Orientation="Horizontal" 
+                                            Spacing="8">
+                                    <Button Click="EditUserButton_Click" 
+                                            Tag="{Binding}" 
+                                            ToolTipService.ToolTip="Editar"
+                                            Width="40" Height="40"
+                                            CornerRadius="20">
+                                        <FontIcon Glyph="&#xE70F;" FontSize="14"/>
+                                    </Button>
+                                    <Button Click="DeleteUserButton_Click" 
+                                            Tag="{Binding}" 
+                                            ToolTipService.ToolTip="Eliminar"
+                                            Width="40" Height="40"
+                                            CornerRadius="20">
+                                        <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

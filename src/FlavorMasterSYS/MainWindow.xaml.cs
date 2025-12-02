@@ -77,13 +77,13 @@ public sealed partial class MainWindow : Window
 
     private void ShowLoginPage()
     {
-        NavigationPanel.Visibility = Visibility.Collapsed;
-        LogoutButton.Visibility = Visibility.Collapsed;
+        NavView.Visibility = Visibility.Collapsed;
+        LoginFrame.Visibility = Visibility.Visible;
         UserInfoTextBlock.Text = string.Empty;
 
         var loginPage = new LoginPage(_authService);
         loginPage.LoginSuccessful += LoginPage_LoginSuccessful;
-        ContentFrame.Content = loginPage;
+        LoginFrame.Content = loginPage;
     }
 
     private async void LoginPage_LoginSuccessful(object? sender, EventArgs e)
@@ -91,28 +91,54 @@ public sealed partial class MainWindow : Window
         var user = _authService.CurrentUser;
         if (user == null) return;
 
-        // Show navigation and user info
-        NavigationPanel.Visibility = Visibility.Visible;
-        LogoutButton.Visibility = Visibility.Visible;
-        UserInfoTextBlock.Text = $"👤 {user.FullName} ({user.Role})";
+        // Show navigation and hide login
+        LoginFrame.Visibility = Visibility.Collapsed;
+        NavView.Visibility = Visibility.Visible;
+        
+        // Update user info
+        UserInfoTextBlock.Text = $"👤 {user.FullName}";
+        UserRoleText.Text = user.Role.ToString();
 
         // Show/hide user management based on role
-        NavUsers.Visibility = _authService.IsMaster ? Visibility.Visible : Visibility.Collapsed;
+        NavItemUsers.Visibility = _authService.IsMaster ? Visibility.Visible : Visibility.Collapsed;
 
         // Show/hide dashboard based on permission
-        NavDashboard.Visibility = (user.CanViewDashboard || _authService.IsMaster) 
+        NavItemDashboard.Visibility = (user.CanViewDashboard || _authService.IsMaster) 
             ? Visibility.Visible 
             : Visibility.Collapsed;
 
         StatusTextBlock.Text = $"Bienvenido / Welcome, {user.FullName}!";
 
-        // Navigate to POS by default
+        // Select POS by default
+        NavView.SelectedItem = NavItemPOS;
         await NavigateToPOSAsync();
     }
 
-    private async void NavPOS_Click(object sender, RoutedEventArgs e)
+    private async void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        await NavigateToPOSAsync();
+        if (args.SelectedItem is NavigationViewItem item)
+        {
+            var tag = item.Tag?.ToString();
+            
+            switch (tag)
+            {
+                case "POS":
+                    await NavigateToPOSAsync();
+                    break;
+                case "Dashboard":
+                    await NavigateToDashboardAsync();
+                    break;
+                case "Inventory":
+                    await NavigateToInventoryAsync();
+                    break;
+                case "Users":
+                    await NavigateToUsersAsync();
+                    break;
+                case "Logout":
+                    Logout();
+                    break;
+            }
+        }
     }
 
     private async Task NavigateToPOSAsync()
@@ -123,7 +149,7 @@ public sealed partial class MainWindow : Window
         StatusTextBlock.Text = "POS - Punto de Venta";
     }
 
-    private async void NavDashboard_Click(object sender, RoutedEventArgs e)
+    private async Task NavigateToDashboardAsync()
     {
         var dashboardPage = new DashboardPage(_orderService);
         ContentFrame.Content = dashboardPage;
@@ -131,7 +157,7 @@ public sealed partial class MainWindow : Window
         StatusTextBlock.Text = "Dashboard - Panel de Control";
     }
 
-    private async void NavInventory_Click(object sender, RoutedEventArgs e)
+    private async Task NavigateToInventoryAsync()
     {
         var inventoryPage = new InventoryPage(_inventoryService);
         ContentFrame.Content = inventoryPage;
@@ -139,7 +165,7 @@ public sealed partial class MainWindow : Window
         StatusTextBlock.Text = "Inventario / Inventory";
     }
 
-    private async void NavUsers_Click(object sender, RoutedEventArgs e)
+    private async Task NavigateToUsersAsync()
     {
         if (!_authService.IsMaster)
         {
@@ -153,7 +179,7 @@ public sealed partial class MainWindow : Window
         StatusTextBlock.Text = "Gestión de Usuarios / User Management";
     }
 
-    private void LogoutButton_Click(object sender, RoutedEventArgs e)
+    private void Logout()
     {
         _authService.Logout();
         StatusTextBlock.Text = "Sesión cerrada / Logged out";

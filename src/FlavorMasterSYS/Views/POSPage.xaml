@@ -9,14 +9,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Padding="24">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="380"/>
         </Grid.ColumnDefinitions>
 
         <!-- Left Panel - Products -->
-        <Grid Grid.Column="0" Padding="16">
+        <Grid Grid.Column="0" Margin="0,0,16,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -24,71 +24,130 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Barcode Input -->
-            <Grid Grid.Row="0" Margin="0,0,0,16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="BarcodeTextBox" 
-                         Grid.Column="0"
-                         PlaceholderText="📷 Escanear código de barras / Scan barcode"
-                         KeyDown="BarcodeTextBox_KeyDown"/>
-                <Button Grid.Column="1" Content="Buscar / Search" Margin="8,0,0,0" Click="SearchBarcodeButton_Click"/>
-            </Grid>
+            <!-- Header -->
+            <TextBlock Grid.Row="0" 
+                       Text="Punto de Venta" 
+                       Style="{ThemeResource TitleTextBlockStyle}"
+                       Margin="0,0,0,16"/>
 
-            <!-- Category Tabs -->
-            <TextBlock Grid.Row="1" Text="Categorías / Categories" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,8"/>
-            <GridView x:Name="CategoryGridView" 
-                      Grid.Row="2" 
-                      SelectionMode="Single"
-                      SelectionChanged="CategoryGridView_SelectionChanged"
-                      Margin="0,0,0,16">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
-                                CornerRadius="4" 
-                                Padding="16,8">
-                            <TextBlock Text="{Binding}" Foreground="White"/>
-                        </Border>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
+            <!-- Barcode Input - Modern Card Style -->
+            <Border Grid.Row="1" 
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,0,16"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" 
+                              Glyph="&#xED14;" 
+                              FontSize="20"
+                              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                              Margin="0,0,12,0"/>
+                    <TextBox x:Name="BarcodeTextBox" 
+                             Grid.Column="1"
+                             PlaceholderText="Escanear o ingresar código de barras..."
+                             BorderThickness="0"
+                             Background="Transparent"
+                             KeyDown="BarcodeTextBox_KeyDown"/>
+                    <Button Grid.Column="2" 
+                            Content="Buscar" 
+                            Style="{ThemeResource AccentButtonStyle}"
+                            CornerRadius="6"
+                            Margin="8,0,0,0" 
+                            Click="SearchBarcodeButton_Click"/>
+                </Grid>
+            </Border>
 
-            <!-- Products Grid -->
-            <GridView x:Name="ProductsGridView" 
-                      Grid.Row="3"
-                      SelectionMode="None"
-                      IsItemClickEnabled="True"
-                      ItemClick="ProductsGridView_ItemClick">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                                CornerRadius="8" 
-                                Width="140" 
-                                Height="100"
-                                Padding="12">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Name}" 
-                                           TextWrapping="Wrap" 
-                                           MaxLines="2"
-                                           Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                                <TextBlock Margin="0,4,0,0">
-                                    <Run Text="$"/>
-                                    <Run Text="{Binding Price}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
+            <!-- Category Chips -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,16">
+                <TextBlock Text="Categorías" 
+                           Style="{ThemeResource BodyStrongTextBlockStyle}" 
+                           Margin="0,0,0,12"/>
+                <GridView x:Name="CategoryGridView" 
+                          SelectionMode="Single"
+                          SelectionChanged="CategoryGridView_SelectionChanged">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                                    CornerRadius="20" 
+                                    Padding="20,10">
+                                <TextBlock Text="{Binding}" 
+                                           Foreground="White"
+                                           FontWeight="SemiBold"/>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+
+            <!-- Products Grid - Modern Cards -->
+            <ScrollViewer Grid.Row="3" HorizontalScrollBarVisibility="Disabled">
+                <GridView x:Name="ProductsGridView" 
+                          SelectionMode="None"
+                          IsItemClickEnabled="True"
+                          ItemClick="ProductsGridView_ItemClick">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" 
+                                           ItemWidth="160" 
+                                           ItemHeight="140"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                    CornerRadius="12" 
+                                    Padding="16"
+                                    Margin="4"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               Text="{Binding Name}" 
+                                               TextWrapping="Wrap" 
+                                               MaxLines="2"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                    <Border Grid.Row="1" 
+                                            Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                            CornerRadius="6"
+                                            Padding="8,4"
+                                            HorizontalAlignment="Left"
+                                            Margin="0,8,0,0">
+                                        <TextBlock Foreground="White" FontWeight="SemiBold">
+                                            <Run Text="$"/>
+                                            <Run Text="{Binding Price}"/>
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </ScrollViewer>
         </Grid>
 
-        <!-- Right Panel - Order -->
+        <!-- Right Panel - Order (Modern Glass Card) -->
         <Border Grid.Column="1" 
-                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
-                Padding="16">
-            <Grid>
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                CornerRadius="16"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1">
+            <Grid Padding="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -100,73 +159,142 @@
                 <!-- Table Number -->
                 <Grid Grid.Row="0" Margin="0,0,0,16">
                     <TextBox x:Name="TableNumberTextBox" 
-                             Header="Mesa / Table" 
-                             PlaceholderText="Número de mesa"/>
+                             Header="Mesa"
+                             PlaceholderText="Número de mesa"
+                             CornerRadius="8"/>
                 </Grid>
 
                 <!-- Order Header -->
-                <TextBlock Grid.Row="1" 
-                           Text="🛒 Orden Actual / Current Order" 
-                           Style="{ThemeResource SubtitleTextBlockStyle}"
-                           Margin="0,0,0,8"/>
+                <Grid Grid.Row="1" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE7BF;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                        <TextBlock Text="Orden Actual" 
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </StackPanel>
+                </Grid>
 
                 <!-- Order Items -->
                 <ListView x:Name="OrderItemsListView" Grid.Row="2">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0,4"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="4">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
-                                    <Button Content="-" Click="DecreaseQuantity_Click" Tag="{Binding}"/>
-                                    <TextBlock Text="{Binding Quantity}" VerticalAlignment="Center" Width="24" TextAlignment="Center"/>
-                                    <Button Content="+" Click="IncreaseQuantity_Click" Tag="{Binding}"/>
-                                </StackPanel>
-                                
-                                <TextBlock Grid.Column="1" Text="{Binding ProductName}" VerticalAlignment="Center" Margin="8,0"/>
-                                <TextBlock Grid.Column="2" VerticalAlignment="Center">
-                                    <Run Text="$"/>
-                                    <Run Text="{Binding Total}"/>
-                                </TextBlock>
-                                <Button Grid.Column="3" Content="🗑️" Click="RemoveItem_Click" Tag="{Binding}" Margin="8,0,0,0"/>
-                            </Grid>
+                            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    CornerRadius="8"
+                                    Padding="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                                        <Button Content="-" 
+                                                Width="32" Height="32" 
+                                                CornerRadius="16"
+                                                Click="DecreaseQuantity_Click" 
+                                                Tag="{Binding}"/>
+                                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                                CornerRadius="4"
+                                                Width="32" Height="32">
+                                            <TextBlock Text="{Binding Quantity}" 
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold"/>
+                                        </Border>
+                                        <Button Content="+" 
+                                                Width="32" Height="32" 
+                                                CornerRadius="16"
+                                                Click="IncreaseQuantity_Click" 
+                                                Tag="{Binding}"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding ProductName}" 
+                                               VerticalAlignment="Center" 
+                                               Margin="12,0"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="2" 
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold">
+                                        <Run Text="$"/>
+                                        <Run Text="{Binding Total}"/>
+                                    </TextBlock>
+                                    <Button Grid.Column="3" 
+                                            Width="32" Height="32"
+                                            CornerRadius="16"
+                                            Margin="8,0,0,0"
+                                            Click="RemoveItem_Click" 
+                                            Tag="{Binding}">
+                                        <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
                 <!-- Totals -->
-                <StackPanel Grid.Row="3" Margin="0,16,0,16">
-                    <Grid>
-                        <TextBlock Text="Subtotal:"/>
-                        <TextBlock x:Name="SubtotalTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
-                    </Grid>
-                    <Grid>
-                        <TextBlock Text="IVA (16%):"/>
-                        <TextBlock x:Name="TaxTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
-                    </Grid>
-                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="0,8"/>
-                    <Grid>
-                        <TextBlock Text="TOTAL:" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <TextBlock x:Name="TotalTextBlock" Text="$0.00" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
-                    </Grid>
-                </StackPanel>
+                <Border Grid.Row="3" 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        CornerRadius="12"
+                        Padding="16"
+                        Margin="0,16,0,16">
+                    <StackPanel Spacing="8">
+                        <Grid>
+                            <TextBlock Text="Subtotal" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock x:Name="SubtotalTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Grid>
+                            <TextBlock Text="IVA (16%)" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock x:Name="TaxTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Border Height="1" 
+                                Background="{ThemeResource DividerStrokeColorDefaultBrush}" 
+                                Margin="0,4"/>
+                        <Grid>
+                            <TextBlock Text="TOTAL" 
+                                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                                       Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                            <TextBlock x:Name="TotalTextBlock" 
+                                       Text="$0.00" 
+                                       Style="{ThemeResource SubtitleTextBlockStyle}" 
+                                       HorizontalAlignment="Right"
+                                       Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
                 <!-- Action Buttons -->
                 <StackPanel Grid.Row="4" Spacing="8">
                     <Button x:Name="CheckoutButton" 
-                            Content="💳 Cobrar / Checkout" 
                             HorizontalAlignment="Stretch"
+                            Height="48"
                             Style="{ThemeResource AccentButtonStyle}"
-                            Click="CheckoutButton_Click"/>
+                            CornerRadius="8"
+                            Click="CheckoutButton_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE8C7;" FontSize="16"/>
+                            <TextBlock Text="Cobrar" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
                     <Button x:Name="ClearOrderButton" 
-                            Content="🗑️ Limpiar / Clear" 
                             HorizontalAlignment="Stretch"
-                            Click="ClearOrderButton_Click"/>
+                            Height="40"
+                            CornerRadius="8"
+                            Click="ClearOrderButton_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                            <TextBlock Text="Limpiar Orden"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

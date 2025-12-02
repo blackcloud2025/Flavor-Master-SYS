@@ -9,82 +9,127 @@
     mc:Ignorable="d"
     Title="Flavor Master - POS Restaurant System">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <!-- Main NavigationView for modern Windows 11 look -->
+        <NavigationView x:Name="NavView"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        PaneDisplayMode="Left"
+                        OpenPaneLength="280"
+                        IsPaneOpen="True"
+                        Visibility="Collapsed"
+                        SelectionChanged="NavView_SelectionChanged">
+            
+            <NavigationView.PaneHeader>
+                <Grid Padding="0,8,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                                CornerRadius="8" 
+                                Width="40" 
+                                Height="40">
+                            <TextBlock Text="🍽️" 
+                                       FontSize="24" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Flavor Master" 
+                                       Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="UserRoleText" 
+                                       Text="" 
+                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </NavigationView.PaneHeader>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="{ThemeResource SystemAccentColorDark1}" Padding="16">
-            <Grid>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="🍽️ Flavor Master" 
-                               Style="{ThemeResource TitleTextBlockStyle}" 
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
-                    <TextBlock x:Name="UserInfoTextBlock" 
-                               Foreground="White" 
-                               VerticalAlignment="Center"/>
-                    <Button x:Name="LogoutButton" 
-                            Content="🚪 Salir / Logout" 
-                            Click="LogoutButton_Click"
-                            Visibility="Collapsed"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="NavItemPOS" 
+                                    Content="Punto de Venta" 
+                                    Tag="POS">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7BF;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemDashboard" 
+                                    Content="Dashboard" 
+                                    Tag="Dashboard"
+                                    Visibility="Collapsed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9F9;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemInventory" 
+                                    Content="Inventario" 
+                                    Tag="Inventory">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE773;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemUsers" 
+                                    Content="Usuarios" 
+                                    Tag="Users"
+                                    Visibility="Collapsed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE716;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
 
-        <!-- Main Content with Navigation -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="NavItemLogout" 
+                                    Content="Cerrar Sesión" 
+                                    Tag="Logout"
+                                    SelectsOnInvoked="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8A7;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
 
-            <!-- Navigation Menu -->
-            <Border x:Name="NavigationPanel" 
-                    Grid.Column="0" 
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    Width="200"
-                    Visibility="Collapsed">
-                <StackPanel Padding="8" Spacing="4">
-                    <Button x:Name="NavPOS" 
-                            Content="🛒 POS" 
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            Click="NavPOS_Click"/>
-                    <Button x:Name="NavDashboard" 
-                            Content="📊 Dashboard" 
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            Click="NavDashboard_Click"/>
-                    <Button x:Name="NavInventory" 
-                            Content="📦 Inventario" 
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            Click="NavInventory_Click"/>
-                    <Button x:Name="NavUsers" 
-                            Content="👥 Usuarios" 
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            Click="NavUsers_Click"
-                            Visibility="Collapsed"/>
-                </StackPanel>
-            </Border>
+            <NavigationView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Page Content -->
+                    <Frame x:Name="ContentFrame" Grid.Row="0"/>
 
-            <!-- Page Content -->
-            <Frame x:Name="ContentFrame" Grid.Column="1"/>
-        </Grid>
+                    <!-- Modern Status Bar -->
+                    <Border Grid.Row="1" 
+                            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,1,0,0"
+                            Padding="16,8">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Ellipse Width="8" Height="8" Fill="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                <TextBlock x:Name="StatusTextBlock" 
+                                           Text="Sistema listo / System ready" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
+                                <TextBlock x:Name="UserInfoTextBlock" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TimeTextBlock" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </NavigationView.Content>
+        </NavigationView>
 
-        <!-- Status Bar -->
-        <Border Grid.Row="2" Background="{ThemeResource SystemAccentColorDark2}" Padding="8,4">
-            <Grid>
-                <TextBlock x:Name="StatusTextBlock" Text="Sistema listo / System ready" Foreground="White" VerticalAlignment="Center"/>
-                <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center"/>
-            </Grid>
-        </Border>
+        <!-- Login Content (shown initially) -->
+        <Frame x:Name="LoginFrame"/>
     </Grid>
 </Window>

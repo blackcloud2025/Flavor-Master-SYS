@@ -17,91 +17,196 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Grid Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="📦 Inventario / Inventory" 
-                       Style="{ThemeResource TitleTextBlockStyle}"
-                       VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-                <Button x:Name="AddProductButton" 
-                        Content="➕ Nuevo Producto / New Product" 
-                        Style="{ThemeResource AccentButtonStyle}"
-                        Click="AddProductButton_Click"/>
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Inventario" 
+                           Style="{ThemeResource TitleLargeTextBlockStyle}"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Gestión de productos y stock" 
+                           Style="{ThemeResource BodyTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
+            <Button x:Name="AddProductButton" 
+                    HorizontalAlignment="Right"
+                    Style="{ThemeResource AccentButtonStyle}"
+                    CornerRadius="8"
+                    Height="40"
+                    Click="AddProductButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE710;" FontSize="14"/>
+                    <TextBlock Text="Nuevo Producto"/>
+                </StackPanel>
+            </Button>
         </Grid>
 
-        <!-- Search and Filter -->
-        <Grid Grid.Row="1" Margin="0,0,0,16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!-- Search and Filter - Modern Card Style -->
+        <Border Grid.Row="1" 
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="12"
+                Padding="16"
+                Margin="0,0,0,16"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="SearchBox" 
-                     Grid.Column="0" 
-                     PlaceholderText="🔍 Buscar por nombre o código de barras / Search by name or barcode"
-                     TextChanged="SearchBox_TextChanged"/>
-            
-            <ComboBox x:Name="CategoryFilter" 
-                      Grid.Column="1" 
-                      PlaceholderText="Categoría / Category" 
-                      Margin="8,0"
-                      SelectionChanged="CategoryFilter_SelectionChanged"/>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" 
+                              Glyph="&#xE721;" 
+                              FontSize="16"
+                              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                              Margin="0,0,12,0"/>
+                    <TextBox x:Name="SearchBox" 
+                             Grid.Column="1"
+                             PlaceholderText="Buscar por nombre o código de barras..."
+                             BorderThickness="0"
+                             Background="Transparent"
+                             TextChanged="SearchBox_TextChanged"/>
+                </Grid>
+                
+                <ComboBox x:Name="CategoryFilter" 
+                          Grid.Column="1" 
+                          PlaceholderText="Categoría" 
+                          Margin="16,0"
+                          MinWidth="150"
+                          CornerRadius="8"
+                          SelectionChanged="CategoryFilter_SelectionChanged"/>
 
-            <ToggleButton x:Name="LowStockFilter" 
-                          Grid.Column="2" 
-                          Content="⚠️ Stock Bajo" 
-                          Click="LowStockFilter_Click"/>
-        </Grid>
+                <ToggleButton x:Name="LowStockFilter" 
+                              Grid.Column="2"
+                              CornerRadius="8"
+                              Click="LowStockFilter_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE7BA;" FontSize="14"/>
+                        <TextBlock Text="Stock Bajo"/>
+                    </StackPanel>
+                </ToggleButton>
+            </Grid>
+        </Border>
 
-        <!-- Products List -->
+        <!-- Products List - Modern Card Design -->
         <Border Grid.Row="2" 
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                CornerRadius="8" 
-                Padding="16">
-            <ListView x:Name="ProductsListView" SelectionMode="None">
+                CornerRadius="16" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1">
+            <ListView x:Name="ProductsListView" 
+                      SelectionMode="None"
+                      Padding="8">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,4"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="8" Margin="0,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="250"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                CornerRadius="12"
+                                Padding="16"
+                                Margin="0,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="280"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding Name}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                                <TextBlock Text="{Binding Barcode}" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                            </StackPanel>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Name}" 
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <FontIcon Glyph="&#xED14;" 
+                                                  FontSize="12"
+                                                  Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text="{Binding Barcode}" 
+                                                   Style="{ThemeResource CaptionTextBlockStyle}"
+                                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
 
-                            <TextBlock Grid.Column="1" Text="{Binding Category}" VerticalAlignment="Center"/>
-                            
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
-                                <Run Text="$"/>
-                                <Run Text="{Binding Price}"/>
-                            </TextBlock>
+                                <Border Grid.Column="1" 
+                                        Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                        CornerRadius="6"
+                                        Padding="12,4"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Category}" 
+                                               Foreground="White"
+                                               FontSize="12"/>
+                                </Border>
+                                
+                                <TextBlock Grid.Column="2" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold">
+                                    <Run Text="$"/>
+                                    <Run Text="{Binding Price}"/>
+                                </TextBlock>
 
-                            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding StockQuantity}" 
-                                           Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
-                                <TextBlock Text=" / "/>
-                                <TextBlock Text="{Binding MinStockLevel}"/>
-                            </StackPanel>
+                                <StackPanel Grid.Column="3" 
+                                            Orientation="Horizontal" 
+                                            VerticalAlignment="Center"
+                                            Spacing="4">
+                                    <Border CornerRadius="4"
+                                            Padding="8,4"
+                                            Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}">
+                                        <TextBlock Text="{Binding StockQuantity}" 
+                                                   Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                                   FontWeight="Bold"/>
+                                    </Border>
+                                    <TextBlock Text="/" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{Binding MinStockLevel}" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                </StackPanel>
 
-                            <TextBlock Grid.Column="4" Text="{Binding Description}" 
-                                       VerticalAlignment="Center" 
-                                       TextTrimming="CharacterEllipsis"
-                                       Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                <TextBlock Grid.Column="4" 
+                                           Text="{Binding Description}" 
+                                           VerticalAlignment="Center" 
+                                           TextTrimming="CharacterEllipsis"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           Style="{ThemeResource CaptionTextBlockStyle}"/>
 
-                            <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8">
-                                <Button Content="📥" Click="AddStockButton_Click" Tag="{Binding}" ToolTipService.ToolTip="Agregar Stock / Add Stock"/>
-                                <Button Content="📤" Click="RemoveStockButton_Click" Tag="{Binding}" ToolTipService.ToolTip="Remover Stock / Remove Stock"/>
-                                <Button Content="✏️" Click="EditProductButton_Click" Tag="{Binding}" ToolTipService.ToolTip="Editar / Edit"/>
-                            </StackPanel>
-                        </Grid>
+                                <StackPanel Grid.Column="5" 
+                                            Orientation="Horizontal" 
+                                            Spacing="8">
+                                    <Button Click="AddStockButton_Click" 
+                                            Tag="{Binding}" 
+                                            ToolTipService.ToolTip="Agregar Stock"
+                                            Width="36" Height="36"
+                                            CornerRadius="8">
+                                        <FontIcon Glyph="&#xE710;" FontSize="14"/>
+                                    </Button>
+                                    <Button Click="RemoveStockButton_Click" 
+                                            Tag="{Binding}" 
+                                            ToolTipService.ToolTip="Remover Stock"
+                                            Width="36" Height="36"
+                                            CornerRadius="8">
+                                        <FontIcon Glyph="&#xE738;" FontSize="14"/>
+                                    </Button>
+                                    <Button Click="EditProductButton_Click" 
+                                            Tag="{Binding}" 
+                                            ToolTipService.ToolTip="Editar"
+                                            Width="36" Height="36"
+                                            CornerRadius="8">
+                                        <FontIcon Glyph="&#xE70F;" FontSize="14"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -10,6 +10,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <!-- Background with subtle gradient effect -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{ThemeResource SystemAccentColorLight3}" Offset="0"/>
+                <GradientStop Color="{ThemeResource SystemAccentColorDark1}" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -18,53 +26,88 @@
 
         <StackPanel Grid.Row="1" 
                     HorizontalAlignment="Center" 
-                    Width="350" 
-                    Spacing="16">
+                    Width="420" 
+                    Spacing="24">
             
-            <!-- Logo/Title -->
-            <TextBlock Text="🍽️" 
-                       FontSize="64" 
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="Flavor Master" 
-                       Style="{ThemeResource TitleLargeTextBlockStyle}" 
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="POS Restaurant System" 
-                       Style="{ThemeResource SubtitleTextBlockStyle}" 
-                       HorizontalAlignment="Center"
-                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <!-- Modern Glass Card -->
+            <Border Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    CornerRadius="16"
+                    Padding="48,40"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1">
+                <Border.Shadow>
+                    <ThemeShadow/>
+                </Border.Shadow>
+                
+                <StackPanel Spacing="32">
+                    <!-- Logo/Title Section -->
+                    <StackPanel Spacing="8" HorizontalAlignment="Center">
+                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                                CornerRadius="20" 
+                                Width="80" 
+                                Height="80"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="🍽️" 
+                                       FontSize="40" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Flavor Master" 
+                                   Style="{ThemeResource TitleLargeTextBlockStyle}" 
+                                   HorizontalAlignment="Center"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="Sistema POS para Restaurantes" 
+                                   Style="{ThemeResource BodyTextBlockStyle}" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
 
-            <!-- Login Form -->
-            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                    CornerRadius="8" 
-                    Padding="24"
-                    Margin="0,24,0,0">
-                <StackPanel Spacing="16">
-                    <TextBox x:Name="UsernameTextBox" 
-                             Header="Usuario / Username" 
-                             PlaceholderText="Enter your username"/>
-                    
-                    <PasswordBox x:Name="PasswordBox" 
-                                 Header="Contraseña / Password" 
-                                 PlaceholderText="Enter your password"/>
+                    <!-- Login Form -->
+                    <StackPanel Spacing="20">
+                        <TextBox x:Name="UsernameTextBox" 
+                                 Header="Usuario"
+                                 PlaceholderText="Ingresa tu usuario"
+                                 CornerRadius="8"/>
+                        
+                        <PasswordBox x:Name="PasswordBox" 
+                                     Header="Contraseña"
+                                     PlaceholderText="Ingresa tu contraseña"
+                                     CornerRadius="8"/>
 
-                    <TextBlock x:Name="ErrorTextBlock" 
-                               Foreground="{ThemeResource SystemFillColorCriticalBrush}"
-                               TextWrapping="Wrap"
-                               Visibility="Collapsed"/>
+                        <TextBlock x:Name="ErrorTextBlock" 
+                                   Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Visibility="Collapsed"/>
 
-                    <Button x:Name="LoginButton" 
-                            Content="Iniciar Sesión / Login" 
-                            HorizontalAlignment="Stretch"
-                            Style="{ThemeResource AccentButtonStyle}"
-                            Click="LoginButton_Click"/>
+                        <Button x:Name="LoginButton" 
+                                Content="Iniciar Sesión" 
+                                HorizontalAlignment="Stretch"
+                                Style="{ThemeResource AccentButtonStyle}"
+                                Height="40"
+                                CornerRadius="8"
+                                Click="LoginButton_Click"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
             <!-- Default credentials hint -->
-            <TextBlock Text="Default: master / master123" 
-                       Style="{ThemeResource CaptionTextBlockStyle}" 
-                       HorizontalAlignment="Center"
-                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+            <StackPanel HorizontalAlignment="Center" Spacing="4">
+                <TextBlock Text="Credenciales por defecto:" 
+                           Style="{ThemeResource CaptionTextBlockStyle}" 
+                           HorizontalAlignment="Center"
+                           Foreground="White"
+                           Opacity="0.8"/>
+                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" 
+                           HorizontalAlignment="Center"
+                           Foreground="White"
+                           Opacity="0.7">
+                    <Run Text="Usuario:"/>
+                    <Run Text="master" FontWeight="SemiBold"/>
+                    <Run Text=" | Contraseña:"/>
+                    <Run Text="master123" FontWeight="SemiBold"/>
+                </TextBlock>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>
