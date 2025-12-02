@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="FlavorMasterSYS.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlavorMasterSYS"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Flavor Master - POS Restaurant System">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{ThemeResource SystemAccentColorDark1}" Padding="16">
+            <TextBlock Text="Flavor Master - POS Restaurant System" 
+                       Style="{ThemeResource TitleTextBlockStyle}" 
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1" Padding="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Menu Items Panel -->
+            <StackPanel Grid.Column="0" Spacing="16">
+                <TextBlock Text="Menu Categories" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <GridView x:Name="CategoryGridView" ItemsSource="{x:Bind Categories}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="150" Height="80" Content="{Binding}" 
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+
+            <!-- Order Summary Panel -->
+            <Border Grid.Column="1" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                    CornerRadius="8" Padding="16" Margin="16,0,0,0">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Current Order" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    <ListView x:Name="OrderListView" Height="300">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding Price}" Grid.Column="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Total:" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Column="0"/>
+                        <TextBlock x:Name="TotalTextBlock" Text="$0.00" 
+                                   Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Column="1"/>
+                    </Grid>
+                    <Button x:Name="CheckoutButton" Content="Checkout" 
+                            HorizontalAlignment="Stretch"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            Click="CheckoutButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="{ThemeResource SystemAccentColorDark2}" Padding="8,4">
+            <Grid>
+                <TextBlock x:Name="StatusTextBlock" Text="Ready" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
