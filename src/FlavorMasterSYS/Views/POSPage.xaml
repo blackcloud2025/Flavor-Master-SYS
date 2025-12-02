@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FlavorMasterSYS.Views.POSPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlavorMasterSYS.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel - Products -->
+        <Grid Grid.Column="0" Padding="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Barcode Input -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="BarcodeTextBox" 
+                         Grid.Column="0"
+                         PlaceholderText="📷 Escanear código de barras / Scan barcode"
+                         KeyDown="BarcodeTextBox_KeyDown"/>
+                <Button Grid.Column="1" Content="Buscar / Search" Margin="8,0,0,0" Click="SearchBarcodeButton_Click"/>
+            </Grid>
+
+            <!-- Category Tabs -->
+            <TextBlock Grid.Row="1" Text="Categorías / Categories" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,8"/>
+            <GridView x:Name="CategoryGridView" 
+                      Grid.Row="2" 
+                      SelectionMode="Single"
+                      SelectionChanged="CategoryGridView_SelectionChanged"
+                      Margin="0,0,0,16">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                                CornerRadius="4" 
+                                Padding="16,8">
+                            <TextBlock Text="{Binding}" Foreground="White"/>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+            <!-- Products Grid -->
+            <GridView x:Name="ProductsGridView" 
+                      Grid.Row="3"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True"
+                      ItemClick="ProductsGridView_ItemClick">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                CornerRadius="8" 
+                                Width="140" 
+                                Height="100"
+                                Padding="12">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}" 
+                                           TextWrapping="Wrap" 
+                                           MaxLines="2"
+                                           Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                <TextBlock Margin="0,4,0,0">
+                                    <Run Text="$"/>
+                                    <Run Text="{Binding Price}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
+
+        <!-- Right Panel - Order -->
+        <Border Grid.Column="1" 
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                Padding="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Table Number -->
+                <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <TextBox x:Name="TableNumberTextBox" 
+                             Header="Mesa / Table" 
+                             PlaceholderText="Número de mesa"/>
+                </Grid>
+
+                <!-- Order Header -->
+                <TextBlock Grid.Row="1" 
+                           Text="🛒 Orden Actual / Current Order" 
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Margin="0,0,0,8"/>
+
+                <!-- Order Items -->
+                <ListView x:Name="OrderItemsListView" Grid.Row="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                                    <Button Content="-" Click="DecreaseQuantity_Click" Tag="{Binding}"/>
+                                    <TextBlock Text="{Binding Quantity}" VerticalAlignment="Center" Width="24" TextAlignment="Center"/>
+                                    <Button Content="+" Click="IncreaseQuantity_Click" Tag="{Binding}"/>
+                                </StackPanel>
+                                
+                                <TextBlock Grid.Column="1" Text="{Binding ProductName}" VerticalAlignment="Center" Margin="8,0"/>
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                    <Run Text="$"/>
+                                    <Run Text="{Binding Total}"/>
+                                </TextBlock>
+                                <Button Grid.Column="3" Content="🗑️" Click="RemoveItem_Click" Tag="{Binding}" Margin="8,0,0,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Totals -->
+                <StackPanel Grid.Row="3" Margin="0,16,0,16">
+                    <Grid>
+                        <TextBlock Text="Subtotal:"/>
+                        <TextBlock x:Name="SubtotalTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="IVA (16%):"/>
+                        <TextBlock x:Name="TaxTextBlock" Text="$0.00" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="0,8"/>
+                    <Grid>
+                        <TextBlock Text="TOTAL:" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock x:Name="TotalTextBlock" Text="$0.00" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Row="4" Spacing="8">
+                    <Button x:Name="CheckoutButton" 
+                            Content="💳 Cobrar / Checkout" 
+                            HorizontalAlignment="Stretch"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            Click="CheckoutButton_Click"/>
+                    <Button x:Name="ClearOrderButton" 
+                            Content="🗑️ Limpiar / Clear" 
+                            HorizontalAlignment="Stretch"
+                            Click="ClearOrderButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>
