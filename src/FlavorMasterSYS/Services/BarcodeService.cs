@@ -32,7 +32,7 @@ public class BarcodeService
         if (key == '\r' || key == '\n')
         {
             // Enter key - check if we have a valid barcode
-            if (_buffer.Length >= 8) // Minimum barcode length
+            if (_buffer.Length >= AppConfig.MinBarcodeLength)
             {
                 BarcodeScanned?.Invoke(this, _buffer);
             }
@@ -49,7 +49,7 @@ public class BarcodeService
     /// </summary>
     public void ProcessBarcode(string barcode)
     {
-        if (!string.IsNullOrWhiteSpace(barcode) && barcode.Length >= 8)
+        if (!string.IsNullOrWhiteSpace(barcode) && barcode.Length >= AppConfig.MinBarcodeLength)
         {
             BarcodeScanned?.Invoke(this, barcode.Trim());
         }
@@ -69,7 +69,7 @@ public class BarcodeService
     public static bool IsValidBarcode(string barcode)
     {
         if (string.IsNullOrWhiteSpace(barcode)) return false;
-        if (barcode.Length < 8 || barcode.Length > 14) return false;
+        if (barcode.Length < AppConfig.MinBarcodeLength || barcode.Length > AppConfig.MaxBarcodeLength) return false;
         
         foreach (var c in barcode)
         {

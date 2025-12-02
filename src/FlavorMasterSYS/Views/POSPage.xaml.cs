@@ -94,7 +94,7 @@ public sealed partial class POSPage : Page
     private void UpdateTotals()
     {
         _subtotal = _orderItems.Sum(i => i.Total);
-        _tax = _subtotal * 0.16m;
+        _tax = _subtotal * AppConfig.TaxRate;
         _total = _subtotal + _tax;
 
         SubtotalTextBlock.Text = $"${_subtotal:F2}";

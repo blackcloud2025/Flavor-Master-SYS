@@ -41,7 +41,7 @@ public class OrderService
                     subtotal += item.Total;
                 }
 
-                var tax = subtotal * 0.16m; // 16% tax
+                var tax = subtotal * AppConfig.TaxRate;
                 var total = subtotal + tax;
                 var orderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString()[..8].ToUpper()}";
 

@@ -145,7 +145,6 @@ public class InventoryService
                     Category = @Category, 
                     Price = @Price, 
                     Barcode = @Barcode, 
-                    StockQuantity = @StockQuantity, 
                     MinStockLevel = @MinStockLevel,
                     UpdatedAt = @UpdatedAt
                 WHERE Id = @Id";
@@ -156,7 +155,6 @@ public class InventoryService
             command.Parameters.AddWithValue("@Category", product.Category);
             command.Parameters.AddWithValue("@Price", (double)product.Price);
             command.Parameters.AddWithValue("@Barcode", product.Barcode);
-            command.Parameters.AddWithValue("@StockQuantity", product.StockQuantity);
             command.Parameters.AddWithValue("@MinStockLevel", product.MinStockLevel);
             command.Parameters.AddWithValue("@UpdatedAt", DateTime.UtcNow.ToString("o"));
 

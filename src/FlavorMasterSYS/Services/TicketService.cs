@@ -129,12 +129,13 @@ public class TicketService
             receiptText.AppendLine($"(   ${item.Total:F2}) Tj");
         }
 
+        var taxPercent = (int)(AppConfig.TaxRate * 100);
         receiptText.AppendLine("0 -20 Td");
         receiptText.AppendLine("(--------------------------------) Tj");
         receiptText.AppendLine("0 -15 Td");
         receiptText.AppendLine($"(Subtotal: ${order.Subtotal:F2}) Tj");
         receiptText.AppendLine("0 -15 Td");
-        receiptText.AppendLine($"(Tax \\(16%\\): ${order.Tax:F2}) Tj");
+        receiptText.AppendLine($"(Tax \\({taxPercent}%\\): ${order.Tax:F2}) Tj");
         receiptText.AppendLine("0 -15 Td");
         receiptText.AppendLine($"(TOTAL: ${order.Total:F2}) Tj");
         receiptText.AppendLine("0 -30 Td");
