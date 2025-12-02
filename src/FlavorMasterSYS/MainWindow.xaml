@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="FlavorMasterSYS.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlavorMasterSYS"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Flavor Master - POS Restaurant System">
+
+    <Grid>
+        <!-- Main NavigationView for modern Windows 11 look -->
+        <NavigationView x:Name="NavView"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        PaneDisplayMode="Left"
+                        OpenPaneLength="280"
+                        IsPaneOpen="True"
+                        Visibility="Collapsed"
+                        SelectionChanged="NavView_SelectionChanged">
+            
+            <NavigationView.PaneHeader>
+                <Grid Padding="0,8,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Border Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                                CornerRadius="8" 
+                                Width="40" 
+                                Height="40">
+                            <TextBlock Text="🍽️" 
+                                       FontSize="24" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Flavor Master" 
+                                       Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="UserRoleText" 
+                                       Text="" 
+                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </NavigationView.PaneHeader>
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="NavItemPOS" 
+                                    Content="Punto de Venta" 
+                                    Tag="POS">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7BF;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemDashboard" 
+                                    Content="Dashboard" 
+                                    Tag="Dashboard"
+                                    Visibility="Collapsed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9F9;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemInventory" 
+                                    Content="Inventario" 
+                                    Tag="Inventory">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE773;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="NavItemUsers" 
+                                    Content="Usuarios" 
+                                    Tag="Users"
+                                    Visibility="Collapsed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE716;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="NavItemLogout" 
+                                    Content="Cerrar Sesión" 
+                                    Tag="Logout"
+                                    SelectsOnInvoked="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8A7;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+
+            <NavigationView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Page Content -->
+                    <Frame x:Name="ContentFrame" Grid.Row="0"/>
+
+                    <!-- Modern Status Bar -->
+                    <Border Grid.Row="1" 
+                            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" 
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,1,0,0"
+                            Padding="16,8">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Ellipse Width="8" Height="8" Fill="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                <TextBlock x:Name="StatusTextBlock" 
+                                           Text="Sistema listo / System ready" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
+                                <TextBlock x:Name="UserInfoTextBlock" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TimeTextBlock" 
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </NavigationView.Content>
+        </NavigationView>
+
+        <!-- Login Content (shown initially) -->
+        <Frame x:Name="LoginFrame"/>
+    </Grid>
+</Window>
