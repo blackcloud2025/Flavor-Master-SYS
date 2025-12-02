@@ -175,6 +175,4 @@ public class TicketService
 
         return Encoding.UTF8.GetBytes(content.ToString());
     }
-
-    public string GetTicketsPath() => _ticketsPath;
 }
